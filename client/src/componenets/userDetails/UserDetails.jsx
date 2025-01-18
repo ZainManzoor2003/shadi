@@ -10,7 +10,7 @@ export default function UserDetails({ }) {
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/${id}/fetchUserDetails`);
+                const response = await axios.get(`https://shadi-backend.vercel.app/${id}/fetchUserDetails`);
                 setUserDetails(response.data); // Update state with fetched users
             } catch (error) {
                 console.error("Error fetching user details:", error);

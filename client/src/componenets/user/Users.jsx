@@ -36,7 +36,7 @@ export default function Users() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/${id}/fetchUsers`);
+                const response = await axios.get(`https://shadi-backend.vercel.app/${id}/fetchUsers`);
                 setAllUsers(response.data); // Update state with fetched users
             } catch (error) {
                 console.error("Error fetching users:", error);

@@ -89,7 +89,7 @@ export default function Registration() {
     const handleSubmit = async () => {
         try {
             // Send a POST request to your Node.js backend
-            const response = await axios.post('http://localhost:3001/register', user);
+            const response = await axios.post('https://shadi-backend.vercel.app/register', user);
 
             if (response.data.mes == 'Registered Successfully') {
                 alert(response.data.mes)
@@ -116,7 +116,7 @@ export default function Registration() {
         console.log(formData);
 
         try {
-            const response = await axios.post("http://localhost:3001/upload", formData,
+            const response = await axios.post("https://shadi-backend.vercel.app/upload", formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',

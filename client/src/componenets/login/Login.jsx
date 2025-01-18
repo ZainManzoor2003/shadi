@@ -16,7 +16,7 @@ export default function Login() {
         else {
             try {
                 // Send a POST request to your Node.js backend
-                const response = await axios.post('http://localhost:3001/login', {
+                const response = await axios.post('https://shadi-backend.vercel.app/login', {
                     email,
                     password
                 });
