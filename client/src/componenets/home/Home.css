@@ -1,0 +1,322 @@
+#logger{
+    position: relative;
+    width: 100%;
+    height: 9vh; /* Full viewport height */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    overflow: hidden;
+    
+    
+}
+.logo-blur {
+    position: absolute;
+    width: 100%; /* Adjust width */
+    height: 70px; /* Adjust height */
+    backdrop-filter: blur(10px); /* Add blur effect */
+    background: rgba(255, 255, 255, 0.3); /* Add slight transparency */
+    border-radius: 10px; /* Optional: round the edges */
+    z-index: 0; /* Place behind the logo */
+  }
+  
+#logger img{
+    height: 60px;
+
+    position: relative;
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+    z-index: 1
+
+}
+
+#headingg-area h1{
+
+        font-family: "Poppins", serif;
+        font-weight: 700;
+        font-style: normal;
+        font-size: 70px;
+
+
+}
+#headingg-area button{
+
+padding: 18px;
+padding-right: 45px;
+padding-left: 45px;
+color: white;
+background-color: black;
+border: none;
+border-radius: 40px;
+font-size: 16px;
+cursor: pointer;
+
+}
+
+
+#headingg-area{
+    margin-top: 180px !important;
+    padding-left: 170px;
+}
+
+#myparent{
+
+    background-image: url("./sample.jpeg");
+    background-size: cover; /* Ensures the image covers the entire area */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  height: 100vh; /* Set the height equal to the viewport height */
+  width: 100vw;
+}
+
+#iopuy{
+    margin-top: -50px;
+}
+
+#uuut{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#uuut p{
+    padding-top: 30px;
+    font-family: "Poppins", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px;
+    color: black;
+}
+
+#uuut h3{
+
+    font-family: "Poppins", serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 40px;
+    color: black;
+
+
+}
+
+#utttu p{
+    width: 800px;
+    text-align: center;
+    color: black;
+}
+
+#utttu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#rrtq img{
+    height: 570px;
+    border-radius: 13px;
+
+}
+
+#rrtq{
+    padding-top: 190px;
+    padding-left: 30px;
+}
+
+#divver p{
+    font-family: "Poppins", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;
+    color: black;
+    text-align: center;
+    width: 800px;
+}
+
+#divver h3{
+    font-family: "Poppins", serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 40px;
+    color: black;
+    text-align: center;
+}
+
+#rrtq{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#footerarea{
+    background-color: black;
+    color: white;
+
+}
+
+#footerarea h3{
+    font-family: "Poppins", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 70px;
+    padding-left: 220px;
+    padding-top: 160px;
+}
+#footerarea p{
+    font-family: "Poppins", serif;
+    font-weight: 200;
+    font-style: normal;
+
+    padding-left: 220px;
+    font-size: 20px;
+    margin-top: -60px;
+  
+}
+
+#footerarea button{
+    padding: 20px;
+    border-radius: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border: none;
+    cursor: pointer;
+margin-left: 220px;
+margin-top: 30px;
+
+}
+
+#footerarea{
+    padding: 20px;
+    margin-top: 80px;
+}
+#hher{
+    padding: 30px;
+}
+#hher hr{
+    width: 1400px;
+}
+
+
+@media screen and (max-width: 1610px) {
+   #divver p{
+    width: 400px;
+   }
+   #divver{
+    margin-left: 60px;
+   }
+
+
+}
+
+@media screen and (max-width: 1483px) {
+    #hher hr{
+        width: 1000px;
+    }
+    #footerarea h3{
+        padding-right: 50px;
+    }
+
+}
+
+@media screen and (max-width: 1272px) {
+    #rrtq{
+        flex-direction: column;
+    }
+    #footerarea h3{
+text-align: center;
+margin: 0;
+padding: 30px;
+font-size: 40px;
+    }
+    #footerarea p{
+     text-align: center;
+     margin: 0;
+padding: 0;
+    }
+    #footerarea{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    #footerarea button{
+        margin: 0;
+margin: 20px;
+    }
+
+}
+
+@media screen and (max-width: 1044px) {
+    #hher hr{
+   width: 700px;
+    }
+
+}
+
+@media screen and (max-width: 848px) {
+    #hher hr{
+        width: 600px;
+         }
+     #rrtq img{
+        height: 350px;
+     }
+
+}
+
+@media screen and (max-width: 681px) {
+   #rrtq{
+    margin: 90px;
+    padding: 0;
+   }
+   #utttu p{
+    padding: 20px;
+   }
+   #headingg-area{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+   }
+   #headingg-area h1{
+    text-align: center;
+   }
+}
+
+@media screen and (max-width: 666px) {
+
+    #hher hr{
+        width: 400px;
+         }
+}
+
+@media screen and (max-width: 500px) {
+#uuut h3{
+    text-align: center;
+}
+#rrtq img{
+    height: 250px;
+ }
+ #divver{
+    margin: 0;
+ }
+ #headingg-area h1{
+   font-size: 50px;
+
+   }
+   #iopuy {
+    margin-top: 5px;
+   }
+}
+
+@media screen and (max-width: 464px) {
+    #hher hr{
+        width: 300px;
+         }
+         #divver p{
+            width: 300px;
+         }
+
+}

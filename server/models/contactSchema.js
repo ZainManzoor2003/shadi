@@ -1,0 +1,15 @@
+const mongoose = require('mongoose')
+
+const contactSchema = new mongoose.Schema({
+    sender: String,
+    reciever: String,
+    name: String,
+    image: String,
+    newNotification: { type: String, default: 'false' }
+
+
+})
+
+const Contact = new mongoose.model('Contact', contactSchema);
+
+module.exports = Contact;

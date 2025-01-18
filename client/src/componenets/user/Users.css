@@ -1,0 +1,314 @@
+:root{
+  --bg: #2d2a19;
+  --text: #5e5235;
+  --font:'Poppins'
+}
+.users-container {
+  position: relative;
+  background-image: linear-gradient(to bottom, var(--bg), var(--text));
+  /* color: white; */
+}
+
+.chat-container {
+  position: fixed;
+  width: 500px;
+  height: 70vh;
+  background-color: white;
+  right: 0;
+  bottom: 0;
+}
+form {
+  font-family: 'Poppins';
+  background-color: #fff;
+  padding: 20px;
+  text-align: center;
+  background-color: #858377;
+}
+
+form h1 {
+  font-size: 1.8rem;
+  color: white;
+  margin-bottom: 20px;
+  text-align: start;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.form-col {
+  width: 50%;
+}
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 5px;
+  text-align: start;
+  color: white;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+input[type="text"] {
+  width: 90%;
+}
+
+.form-button {
+  display: flex;
+  justify-content: start;
+}
+
+form button {
+  background-color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 20px;
+  color: var(--text);
+  cursor: pointer;
+  position: relative;
+  font-family: 'Poppins';
+  font-weight: 500;
+  margin-top: 20px;
+}
+
+@media (max-width:1100px) {
+  .filter-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .filter-form .form-row {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-col {
+    width: 70%;
+  }
+
+  .chat-container {
+    flex-direction: column;
+    height: 100vh;
+  }h1
+
+  .chat-container .contacts {
+    width: 100%;
+    height: 40%;
+  }
+
+  .chat-container .messages {
+    width: 100% !important;
+    height: 60%;
+  }
+}
+
+
+#header h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-style: normal;
+  font-size: 50px;
+  padding-left: 10px;
+  color: white;
+  font-family: Poppins;
+
+}
+
+#header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#header h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "Pacifico", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-style: normal;
+  color: white;
+  font-family: Poppins;
+  font-size: 50px;
+
+}
+
+#container img {
+  height: 350px;
+  width: 100%;
+}
+
+#head {
+  display: flex;
+  padding-left: 10px;
+}
+
+#head h2 {
+  font-family: "Pacifico", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+
+
+}
+
+#container {
+  background-color: #fafafa;
+  border: 1px solid black;
+  width: 360px;
+  margin: 13px;
+  cursor: pointer;
+}
+
+#para {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#uppercontainer {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+h2 {
+  margin: 0;
+  color: white;
+  font-family: Poppins;
+}
+
+p {
+  margin: 0;
+  font-family: 'Poppins';
+  color: darkgray;
+}
+
+@media screen and (max-width: 888px) {
+  #header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  #header h2 {
+    margin-top: -30px;
+  }
+
+}
+
+@media screen and (max-width: 400px) {
+  #header h2 {
+
+    font-size: 30px;
+  }
+
+  #header h1 {
+
+    font-size: 30px;
+  }
+
+}
+
+.card {
+  background-color: var(--text);
+  color: var(--bg);
+  height: 30em;
+  width: 360px;
+  margin: 13px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.cardImage {
+  height: 350px;
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+}
+
+.cardSection {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 0.5em;
+}
+
+.cardContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardText {
+  color: var(--text);
+  display: flex;
+  gap: 0.3rem;
+}
+
+.cardName {
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: var(--font);
+  color: white;
+}
+
+.cardDescription {
+  border-top: 1px solid white;
+  padding: 0.5em 0;
+  color: white;
+}
+
+.cardSection h2 {
+  font-family: var(--font);
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+.footer {
+  min-height: 30dvh;
+  height: fit-content;
+  width: 100%;
+  background-image: linear-gradient(to bottom, var(--text), var(--bg));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em 0;
+  text-align: center;
+}
+
+.footerContainer {
+  width: 80%;
+}
+
+.footerText {
+  width: 100%;
+  color: white;
+  font-family: var(--font);
+  font-size: 5rem;
+}

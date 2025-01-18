@@ -1,0 +1,113 @@
+.modal-overlay {
+    width: 100vw;
+    background-image: url("./sample.jpeg");
+    background-size: cover; /* Ensures the image covers the entire area */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  height: 100vh; /* Set the height equal to the viewport height */
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.login-modal-content {
+    background: white;
+    width: 30vw;
+    /* height: 100vh; */
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color:#5e5235;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.4);
+
+    -webkit-backdrop-filter: blur(5px);
+  
+    backdrop-filter: blur(5px);
+  
+}
+
+.login-modal-content label {
+    display: block;
+    color: white;
+    margin-top: 10px;
+    text-transform: capitalize;
+    font-family: 'Poppins';
+}
+
+.login-modal-content input[type='text'], .login-modal-content input[type='password'] {
+    width: 95%;
+    border: none;
+    margin-top: 5px;
+    border-radius: 5px;
+    outline: none;
+    font-size: 0.9rem;
+    padding: 15px 0px;
+    padding-left: 15px;
+    border: 1px solid #ddd;
+}
+
+.login-modal-content .submit-btn {
+    margin-top: 20px;
+    background-color: white;
+    border: none;
+    color: #5e5235;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: 700;
+    width: 99%;
+}
+
+h1 {
+    color: white;
+}
+
+.home-abs-img {
+    position: absolute;
+    top: 10%;
+    left: 5%;
+}
+
+.home-abs-img3 {
+    position: absolute;
+    top: 10%;
+    right: 10%;
+}
+
+.home-abs-img2 {
+    position: absolute;
+    top: 70%;
+    left: 10%;
+}
+
+@media (max-width:1000px) {
+    .login-modal-content {
+        width: 70vw;
+        height: 70dvh;
+        /* border-radius: 0; */
+    }
+}
+@media (max-width:600px) {
+    .login-modal-content {
+        width: 90vw;
+        height: 70dvh;
+        /* border-radius: 0; */
+    }
+}
+
+
+
+#iuy{
+    font-family: "Poppins", serif !important;
+    font-weight: 400;
+    font-style: normal;
+    color: #46350d;
+}
