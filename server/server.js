@@ -5,7 +5,12 @@ const app = express();
 const router = require('./routers/router')
 const connection = require('./db')
 
-app.use(cors())
+const corsOptions = {
+  origin: 'https://shadi-frontend.vercel.app', // Replace with your allowed origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+};
+
+app.use(cors());
 app.use(express.json())
 app.use('/', router)
 
