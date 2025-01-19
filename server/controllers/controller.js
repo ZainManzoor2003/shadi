@@ -1,24 +1,25 @@
 const UserSchema = require('../models/userSchema')
 const MessageSchema = require('../models/messageSchema')
 const ContactSchema = require('../models/contactSchema')
+const jwt = require('jsonwebtoken');
+
 const connection = (req, res) => {
     res.send('Hello')
 }
 
 const isLoggedIn = (req, res, next) => {
+
+    const token = req.cookies.authToken; // Assuming you're storing the token in a cookie
+
     if (!token) {
-        res.send({ mes: 'Token Missing' })
+        return res.status(401).send({ isAuthenticated: false });
     }
-    else {
-        jwt.verify(token, process.env.JWT_SECRETKEY, (err, decoded) => {
-            if (err) {
-                res.send({ mes: 'Error with token' })
-            }
-            else {
-                next();
-                // console.log(decoded);
-            }
-        })
+
+    try {
+        const decoded = jwt.verify(token, 'app'); // Replace 'app' with your secret
+        res.send({ isAuthenticated: true, userId: decoded.id });
+    } catch (error) {
+        res.status(401).send({ isAuthenticated: false });
     }
 }
 const login = async (req, res) => {
@@ -32,9 +33,14 @@ const login = async (req, res) => {
                     email: user.email,
                     id: user._id
                 }
-                // const token = jwt.sign(tokenData, 'app', {
-                //     expiresIn: '1d'
-                // });
+                const token = jwt.sign(tokenData, 'app', {
+                    expiresIn: '1d'
+                });
+                res.cookie('authToken', token, {
+                    httpOnly: true, // Helps prevent XSS attacks
+                    secure: true, // Ensures the cookie is only sent over HTTPS (use false for development)
+                    maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+                });
                 res.send({ mes: 'Login Successfully', user })
             }
             else {

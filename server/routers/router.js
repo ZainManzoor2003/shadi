@@ -26,6 +26,8 @@ router.get('/fetchMessages', connection.getMessages)
 
 router.get('/fetchContacts/:id', connection.getContacts)
 
+router.get('/verify-token', connection.isLoggedIn)
+
 // ********* Post Requests *********
 router.post('/login', connection.login)
 

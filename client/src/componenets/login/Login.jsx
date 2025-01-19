@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Login.css'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
@@ -9,6 +9,27 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    // Check if authToken exists when the component mounts
+    useEffect(() => {
+        const checkAuthToken = async () => {
+            try {
+                // Check if the authToken is available (from cookies or local storage)
+                const response = await axios.get('http://localhost:3001/verify-token', {
+                    withCredentials: true,
+                });
+
+                if (response.data.isAuthenticated) {
+                    // If the token is valid, redirect the user
+                    navigate(`/${response.data.userId}/users`);
+                }
+            } catch (error) {
+                console.log('User is not authenticated or token is invalid.');
+            }
+        };
+
+        checkAuthToken();
+    }, []);
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true)
@@ -18,10 +39,10 @@ export default function Login() {
         else {
             try {
                 // Send a POST request to your Node.js backend
-                const response = await axios.post('https://shadi-backend.vercel.app/login', {
+                const response = await axios.post('https://shadi-frontend.vercel.app/login', {
                     email,
                     password
-                });
+                }, { withCredentials: true });
 
                 if (response.data.mes == 'Login Successfully') {
                     // Handle successful login (e.g., redirect, store token)
@@ -52,8 +73,8 @@ export default function Login() {
                     <input type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)} />
-                    <button disabled={loading} class="submit-btn" 
-                    onClick={(e) => handleLogin(e)}>{loading ? 'Logging In...' : 'Login'}</button>
+                    <button disabled={loading} class="submit-btn"
+                        onClick={(e) => handleLogin(e)}>{loading ? 'Logging In...' : 'Login'}</button>
                 </div>
             </div>
         </>
