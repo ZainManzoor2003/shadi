@@ -6,10 +6,12 @@ import axios from 'axios'
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true)
         if (!email || !password) {
             alert('Please fill input fields')
         }
@@ -34,24 +36,26 @@ export default function Login() {
                 console.log('An error occurred. Please try again.');
             }
         }
+        setLoading(false)
     };
     return (
         <>
-             <div class="modal-overlay">
-            
-            <div class="login-modal-content">
-                <h1 id="iuy">Login Form</h1>
-                <label id="la">Email:</label>
-                <input type="text"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)} />
-                <label id="la">Password:</label>
-                <input type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)} />
-                <button class="submit-btn" onClick={(e) => handleLogin(e)}>Login</button>
+            <div class="modal-overlay">
+
+                <div class="login-modal-content">
+                    <h1 id="iuy">Login Form</h1>
+                    <label id="la">Email:</label>
+                    <input type="text"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)} />
+                    <label id="la">Password:</label>
+                    <input type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)} />
+                    <button disabled={loading} class="submit-btn" 
+                    onClick={(e) => handleLogin(e)}>{loading ? 'Logging In...' : 'Login'}</button>
+                </div>
             </div>
-        </div>
         </>
     )
 }
