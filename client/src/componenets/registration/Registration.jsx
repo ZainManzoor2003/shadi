@@ -10,6 +10,7 @@ export default function Registration() {
     const [uploadedUrl, setUploadedUrl] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [next, setNext] = useState({ one: false, two: false, three: false });
+    const [loading, setLoading] = useState(false);
     const [user, setUser] = useState({
         name: '',
         email: '',
@@ -87,6 +88,7 @@ export default function Registration() {
         }));
     }
     const handleSubmit = async () => {
+        setLoading(true)
         try {
             // Send a POST request to your Node.js backend
             const response = await axios.post('https://shadi-backend.vercel.app/register', user);
@@ -103,6 +105,7 @@ export default function Registration() {
             // Handle error (e.g., network issues)
             console.log('An error occurred. Please try again.');
         }
+        setLoading(false)
     }
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
@@ -138,10 +141,10 @@ export default function Registration() {
 
     return (
         <>
-           <div class="modal-overlay">
+            <div class="modal-overlay">
                 {!next.one ?
                     <>
-                     
+
                         <div class="modal-content">
                             <h1 id="ppq">Register Form</h1>
                             <div class="form-row">
@@ -293,7 +296,7 @@ export default function Registration() {
                             <a class="login-navigate" onClick={() => navigate('/login')}>Already have an account <span>Login</span></a>
                         </div>
                     </> : !next.two ? <>
-                       
+
                         <div class="modal-content">
                             <h1 id="ppq">Appearance</h1>
                             <div class="form-row">
@@ -348,7 +351,7 @@ export default function Registration() {
                             <a class="login-navigate" onClick={() => navigate('/login')}>Already have an account <span>Login</span></a>
                         </div></> :
                         <>
-                          
+
                             <div class="modal-content">
                                 <h1 id="ppq">Lifestyle</h1>
                                 <div class="form-row">
@@ -398,7 +401,8 @@ export default function Registration() {
                                         />
                                     </div>
                                 </div>
-                                <button class="submit-btn" onClick={handleSubmit}>Submit</button>
+                                <button disabled={loading} class="submit-btn"
+                                    onClick={handleSubmit}>{loading ? 'Registring... ' : 'Submit'}</button>
 
                                 <a class="login-navigate" onClick={() => navigate('/login')}>Already have an account <span>Login</span></a>
                             </div>
