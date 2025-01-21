@@ -7,6 +7,7 @@ import axios from 'axios';
 export default function Registration() {
     const navigate = useNavigate();
     const [country, setCountry] = useState('');
+    const range = Array.from({ length: 99 - 18 + 1 }, (_, i) => i + 18);
     const [uploadedUrl, setUploadedUrl] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [next, setNext] = useState({ one: false, two: false, three: false });
@@ -161,9 +162,9 @@ export default function Registration() {
                                         value={user.age}
                                         onChange={handleInputChange}>
                                         <option value="">Select Age</option>
-                                        <option value="18">18</option>
-                                        <option value="19">19</option>
-                                        <option value="20">20</option>
+                                        {range.map(num => (
+                                        <option value={num}>{num}</option>
+                                    ))}
                                     </select>
                                 </div>
                             </div>
