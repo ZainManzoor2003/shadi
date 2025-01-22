@@ -352,13 +352,9 @@ export default function Registration() {
                             <div class="form-row">
                                 <div class="form-col">
                                     <label id="la">Religion</label>
-                                    <select id="age" name="religion"
+                                    <input type="text" name="religion"
                                         value={user.religion}
-                                        onChange={handleInputChange}>
-                                        <option value="">Select Religion</option>
-                                        <option value="Islam">Islam</option>
-                                        <option value="Hindu">Hindu</option>
-                                    </select>
+                                        onChange={handleInputChange} />
                                 </div>
                                 <div class="form-col">
                                     <label id="la">Keywords</label>

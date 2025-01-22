@@ -27,7 +27,7 @@ export default function Login() {
             }
         };
 
-        // checkAuthToken();
+        checkAuthToken();
     }, []);
 
     const handleLogin = async (e) => {
