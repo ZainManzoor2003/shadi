@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import './Users.css'
 import CreateContextApi from '../../ContextApi/CreateContextApi';
 import { useNavigate, useParams } from 'react-router-dom';
-import countries from '../../assets/countries';
+// import countries from '../../assets/countries';
 import Message from '../messages/Message';
 import { io } from 'socket.io-client'
 import axios from 'axios';
@@ -12,16 +12,23 @@ import Contact from '../contacts/Contact';
 export default function Users() {
     const navigate = useNavigate();
     const [chat, setChat] = useState(false);
+    const [code, setCode] = useState('');
     const [allChatClick, setAllChatClick] = useState();
     const range = Array.from({ length: 99 - 18 + 1 }, (_, i) => i + 18);
     const [status, setStatus] = useState()
+    const [city, setCity] = useState('')
+    const [province, setProvince] = useState('')
     const { id } = useParams()
-    const { allUsers, setAllUsers, setUserDetails, socket, activeUsers, setActiveUsers } = useContext(CreateContextApi);
+    const { allUsers, setAllUsers, setUserDetails, socket, activeUsers, setActiveUsers,
+        countries, setCountries, cities, setCities, provinces, setProvinces
+    } = useContext(CreateContextApi);
     const [tempAllUsers, setTempAllUsers] = useState(allUsers)
 
     const [userForChat, setUserForChat] = useState({ image: '', name: '', id: '' })
     const [country, setCountry] = useState('');
     const [suggestions, setSuggestions] = useState([]);
+    const [citySuggestions, setCitySuggestions] = useState([]);
+    const [provinceSuggestions, setProvinceSuggestions] = useState([]);
     const [filterUser, setFilterUser] = useState({
         lookingFor: '',
         startAge: '',
@@ -80,19 +87,104 @@ export default function Users() {
 
         // Filter countries based on input
         const filteredCountries = countries.filter((country) =>
-            country.toLowerCase().startsWith(input.toLowerCase())
+            country.name.toLowerCase().startsWith(input.toLowerCase())
         );
 
         setSuggestions(filteredCountries); // Update suggestions state
         console.log('Suggestions:', filteredCountries); // Log suggestions to the console
     };
 
+    const handleProvinceChange = (e) => {
+        const input = e.target.value;
+        const { name } = e.target;
+        setFilterUser((prev) => ({
+            ...prev,
+            [name]: input
+        }));
+
+        // Filter countries based on input
+        const filteredCountries = provinces.filter((province) =>
+            province.name.toLowerCase().startsWith(input.toLowerCase())
+        );
+
+        setProvinceSuggestions(filteredCountries); // Update suggestions state
+        console.log('Suggestions:', filteredCountries); // Log suggestions to the console
+    };
+    const handleCityChange = (e) => {
+        const input = e.target.value;
+        const { name } = e.target;
+        setFilterUser((prev) => ({
+            ...prev,
+            [name]: input
+        }));
+
+        // Filter countries based on input
+        const filteredCountries = cities.filter((city) =>
+            city.name.toLowerCase().startsWith(input.toLowerCase())
+        );
+
+        setCitySuggestions(filteredCountries); // Update suggestions state
+        console.log('Suggestions:', filteredCountries); // Log suggestions to the console
+    };
+
+    const getProvinces = () => {
+        var headers = new Headers();
+        headers.append("X-CSCAPI-KEY", "ZWlRUzczU0F0MnU1eG5lb3JmcVBqUGtncHRWQjR0cXhKcjhXNXhaZQ==");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: headers,
+            redirect: 'follow'
+        };
+
+        fetch(`https://api.countrystatecity.in/v1/countries/${code}/states`, requestOptions)
+            .then(response => response.text())
+            .then(result => setProvinces(JSON.parse(result)))
+            .catch(error => console.log('error', error));
+    }
+    const getCities = () => {
+        var headers = new Headers();
+        headers.append("X-CSCAPI-KEY", "ZWlRUzczU0F0MnU1eG5lb3JmcVBqUGtncHRWQjR0cXhKcjhXNXhaZQ==");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: headers,
+            redirect: 'follow'
+        };
+
+        fetch(`https://api.countrystatecity.in/v1/countries/${code}/cities`, requestOptions)
+            .then(response => response.text())
+            .then(result => setCities(JSON.parse(result)))
+            .catch(error => console.log('error', error));
+    }
+    useEffect(() => {
+        code && getCities()
+    }, [code])
+    useEffect(() => {
+        code && getProvinces()
+    }, [code])
+
     const handleSuggestionClick = (country) => {
         setFilterUser((prev) => ({
             ...prev,
-            country: country
+            country: country.name
         })); // Set the clicked suggestion as the input value
-        setSuggestions([]); // Clear suggestions
+        setSuggestions([]);
+        setCode(country.iso2) // Clear suggestions
+    };
+    const handleProvinceSuggestion = (province) => {
+        setFilterUser((prev) => ({
+            ...prev,
+            province: province.name
+        })); // Set the clicked suggestion as the input value
+        setProvinceSuggestions([]); // Clear suggestions
+    };
+    const handleCitySuggestion = (city) => {
+        setFilterUser((prev) => ({
+            ...prev,
+            city: city.name
+        })); // Set the clicked suggestion as the input value
+        setCitySuggestions([]);
     };
 
     const filterUsers = (e) => {
@@ -161,7 +253,7 @@ export default function Users() {
                                     ))}
                                 </select>
                                 <select id="age" name="endAge" value={filterUser.endAge} onChange={handleInputChange}>
-                                <option value="">End Age</option>
+                                    <option value="">End Age</option>
                                     {range.map(num => (
                                         <option value={num}>{num}</option>
                                     ))}
@@ -179,7 +271,7 @@ export default function Users() {
                                             onClick={() => handleSuggestionClick(country)}
                                             className="suggestion-item"
                                         >
-                                            {country}
+                                            {country.name}
                                         </li>
                                     ))}
                                 </ul>
@@ -187,11 +279,43 @@ export default function Users() {
                         </div>
                         <div className="form-col">
                             <label>Province</label>
-                            <input type="text" name='province' value={filterUser.province} onChange={handleInputChange} />
+                            <input type="text" name="province"
+                                value={filterUser.province}
+                                onChange={handleProvinceChange}
+                            />
+                            {provinceSuggestions.length > 0 && (
+                                <ul className="suggestions-list">
+                                    {provinceSuggestions.map((province, index) => (
+                                        <li
+                                            key={index}
+                                            onClick={() => handleProvinceSuggestion(province)}
+                                            className="suggestion-item"
+                                        >
+                                            {province.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                         <div className="form-col">
                             <label>City</label>
-                            <input type="text" name='city' value={filterUser.city} onChange={handleInputChange} />
+                            <input type="text" name="city"
+                                        value={filterUser.city}
+                                        onChange={handleCityChange}
+                                    />
+                                    {citySuggestions.length > 0 && (
+                                        <ul className="suggestions-list">
+                                            {citySuggestions.map((city, index) => (
+                                                <li
+                                                    key={index}
+                                                    onClick={() => handleCitySuggestion(city)}
+                                                    className="suggestion-item"
+                                                >
+                                                    {city.name}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
                         </div>
                     </div>
                     <div className="form-row">

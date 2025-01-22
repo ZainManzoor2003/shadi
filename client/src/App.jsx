@@ -18,7 +18,7 @@ function App() {
       <Routes>
         <Route exact path='/' element={<ContextApiStates><Home /></ContextApiStates>}></Route>
         <Route exact path='/login' element={<Login />}></Route>
-        <Route exact path='/registration' element={<Registration />}></Route>
+        <Route exact path='/registration' element={<ContextApiStates><Registration /></ContextApiStates>}></Route>
         <Route exact path='/:id/users' element={<ContextApiStates><Users /></ContextApiStates>}></Route>
         <Route exact path='/:id/userDetails' element={<ContextApiStates><UserDetails /></ContextApiStates>}></Route>
       </Routes>

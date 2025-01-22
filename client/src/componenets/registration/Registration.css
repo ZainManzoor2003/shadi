@@ -163,6 +163,7 @@ h1 {
 }
 
 .suggestion-item {
+    text-align: left;
     padding: 8px;
     cursor: pointer;
     font-family: 'Poppins';

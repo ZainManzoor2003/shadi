@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './Registration.css'
 import { useNavigate } from 'react-router-dom'
-import countries from '../../assets/countries';
+// import countries from '../../assets/countries';
 import axios from 'axios';
+import CreateContextApi from '../../ContextApi/CreateContextApi';
 
 export default function Registration() {
     const navigate = useNavigate();
     const [country, setCountry] = useState('');
+    const [code, setCode] = useState('');
+    const { countries, setCountries, cities, setCities, provinces, setProvinces } = useContext(CreateContextApi)
+    const [city, setCity] = useState('')
+    const [province, setProvince] = useState('')
     const range = Array.from({ length: 99 - 18 + 1 }, (_, i) => i + 18);
     const [uploadedUrl, setUploadedUrl] = useState("");
     const [suggestions, setSuggestions] = useState([]);
+    const [citySuggestions, setCitySuggestions] = useState([]);
+    const [provinceSuggestions, setProvinceSuggestions] = useState([]);
     const [next, setNext] = useState({ one: false, two: false, three: false });
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState({
@@ -62,20 +69,105 @@ export default function Registration() {
 
         // Filter countries based on input
         const filteredCountries = countries.filter((country) =>
-            country.toLowerCase().startsWith(input.toLowerCase())
+            country.name.toLowerCase().startsWith(input.toLowerCase())
         );
 
         setSuggestions(filteredCountries); // Update suggestions state
         console.log('Suggestions:', filteredCountries); // Log suggestions to the console
     };
+    const handleProvinceChange = (e) => {
+        const input = e.target.value;
+        const { name } = e.target;
+        setUser((prev) => ({
+            ...prev,
+            [name]: input
+        }));
+
+        // Filter countries based on input
+        const filteredCountries = provinces.filter((province) =>
+            province.name.toLowerCase().startsWith(input.toLowerCase())
+        );
+
+        setProvinceSuggestions(filteredCountries); // Update suggestions state
+        console.log('Suggestions:', filteredCountries); // Log suggestions to the console
+    };
+    const handleCityChange = (e) => {
+        const input = e.target.value;
+        const { name } = e.target;
+        setUser((prev) => ({
+            ...prev,
+            [name]: input
+        }));
+
+        // Filter countries based on input
+        const filteredCountries = cities.filter((city) =>
+            city.name.toLowerCase().startsWith(input.toLowerCase())
+        );
+
+        setCitySuggestions(filteredCountries); // Update suggestions state
+        console.log('Suggestions:', filteredCountries); // Log suggestions to the console
+    };
+
+    const getProvinces = () => {
+        var headers = new Headers();
+        headers.append("X-CSCAPI-KEY", "ZWlRUzczU0F0MnU1eG5lb3JmcVBqUGtncHRWQjR0cXhKcjhXNXhaZQ==");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: headers,
+            redirect: 'follow'
+        };
+
+        fetch(`https://api.countrystatecity.in/v1/countries/${code}/states`, requestOptions)
+            .then(response => response.text())
+            .then(result => setProvinces(JSON.parse(result)))
+            .catch(error => console.log('error', error));
+    }
+    const getCities = () => {
+        var headers = new Headers();
+        headers.append("X-CSCAPI-KEY", "ZWlRUzczU0F0MnU1eG5lb3JmcVBqUGtncHRWQjR0cXhKcjhXNXhaZQ==");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: headers,
+            redirect: 'follow'
+        };
+
+        fetch(`https://api.countrystatecity.in/v1/countries/${code}/cities`, requestOptions)
+            .then(response => response.text())
+            .then(result => setCities(JSON.parse(result)))
+            .catch(error => console.log('error', error));
+    }
+    useEffect(() => {
+        code && getCities()
+    }, [code])
+    useEffect(() => {
+        code && getProvinces()
+    }, [code])
 
     const handleSuggestionClick = (country) => {
         setUser((prev) => ({
             ...prev,
-            country: country
+            country: country.name
         })); // Set the clicked suggestion as the input value
-        setSuggestions([]); // Clear suggestions
+        setSuggestions([]);
+        setCode(country.iso2) // Clear suggestions
     };
+    const handleProvinceSuggestion = (province) => {
+        setUser((prev) => ({
+            ...prev,
+            province: province.name
+        })); // Set the clicked suggestion as the input value
+        setProvinceSuggestions([]); // Clear suggestions
+    };
+    const handleCitySuggestion = (city) => {
+        setUser((prev) => ({
+            ...prev,
+            city: city.name
+        })); // Set the clicked suggestion as the input value
+        setCitySuggestions([]);
+    };
+
     const handleFirstNext = () => {
         setNext((prevState) => ({
             ...prevState, // Preserve previous state
@@ -163,8 +255,8 @@ export default function Registration() {
                                         onChange={handleInputChange}>
                                         <option value="">Select Age</option>
                                         {range.map(num => (
-                                        <option value={num}>{num}</option>
-                                    ))}
+                                            <option value={num}>{num}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
@@ -194,7 +286,7 @@ export default function Registration() {
                                                     onClick={() => handleSuggestionClick(country)}
                                                     className="suggestion-item"
                                                 >
-                                                    {country}
+                                                    {country.name}
                                                 </li>
                                             ))}
                                         </ul>
@@ -206,41 +298,41 @@ export default function Registration() {
                                     <label id="la">Provinvce:</label>
                                     <input type="text" name="province"
                                         value={user.province}
-                                        onChange={handleInputChange}
+                                        onChange={handleProvinceChange}
                                     />
-                                    {/* {suggestions.length > 0 && (
+                                    {provinceSuggestions.length > 0 && (
                                         <ul className="suggestions-list">
-                                            {suggestions.map((country, index) => (
+                                            {provinceSuggestions.map((province, index) => (
                                                 <li
                                                     key={index}
-                                                    onClick={() => handleSuggestionClick(country)}
+                                                    onClick={() => handleProvinceSuggestion(province)}
                                                     className="suggestion-item"
                                                 >
-                                                    {country}
+                                                    {province.name}
                                                 </li>
                                             ))}
                                         </ul>
-                                    )} */}
+                                    )}
                                 </div>
                                 <div class="form-col">
                                     <label id="la">City:</label>
                                     <input type="text" name="city"
                                         value={user.city}
-                                        onChange={handleInputChange}
+                                        onChange={handleCityChange}
                                     />
-                                    {/* {suggestions.length > 0 && (
+                                    {citySuggestions.length > 0 && (
                                         <ul className="suggestions-list">
-                                            {suggestions.map((country, index) => (
+                                            {citySuggestions.map((city, index) => (
                                                 <li
                                                     key={index}
-                                                    onClick={() => handleSuggestionClick(country)}
+                                                    onClick={() => handleCitySuggestion(city)}
                                                     className="suggestion-item"
                                                 >
-                                                    {country}
+                                                    {city.name}
                                                 </li>
                                             ))}
                                         </ul>
-                                    )} */}
+                                    )}
                                 </div>
                             </div>
                             <div class="form-row">
