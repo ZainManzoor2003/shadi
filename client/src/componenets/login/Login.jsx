@@ -14,7 +14,7 @@ export default function Login() {
         const checkAuthToken = async () => {
             try {
                 // Check if the authToken is available (from cookies or local storage)
-                const response = await axios.get('https://shadi-backend.vercel.app/verify-token', {
+                const response = await axios.get('http://localhost:3001/verify-token', {
                     withCredentials: true,
                 });
 
@@ -39,7 +39,7 @@ export default function Login() {
         else {
             try {
                 // Send a POST request to your Node.js backend
-                const response = await axios.post('https://shadi-backend.vercel.app/login', {
+                const response = await axios.post('http://localhost:3001/login', {
                     email,
                     password
                 }, { withCredentials: true });

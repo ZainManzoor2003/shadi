@@ -8,6 +8,7 @@ import { io } from 'socket.io-client'
 import axios from 'axios';
 import { IoMdChatboxes } from "react-icons/io";
 import Contact from '../contacts/Contact';
+import { AiOutlineLike } from "react-icons/ai";
 
 export default function Users() {
     const navigate = useNavigate();
@@ -20,9 +21,10 @@ export default function Users() {
     const [province, setProvince] = useState('')
     const { id } = useParams()
     const { allUsers, setAllUsers, setUserDetails, socket, activeUsers, setActiveUsers,
-        countries, setCountries, cities, setCities, provinces, setProvinces
+        countries, setCountries, cities, setCities, provinces, setProvinces,
     } = useContext(CreateContextApi);
     const [tempAllUsers, setTempAllUsers] = useState(allUsers)
+    const [currentUser, setCurrentUser] = useState({});
 
     const [userForChat, setUserForChat] = useState({ image: '', name: '', id: '' })
     const [country, setCountry] = useState('');
@@ -43,13 +45,26 @@ export default function Users() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get(`https://shadi-backend.vercel.app/${id}/fetchUsers`);
+                const response = await axios.get(`http://localhost:3001/${id}/fetchUsers`);
                 setAllUsers(response.data); // Update state with fetched users
             } catch (error) {
                 console.error("Error fetching users:", error);
             }
         };
         allUsers.length === 0 && fetchUsers();
+    }, []);
+    useEffect(() => {
+        const getCurrentUser = async () => {
+            try {
+                const response = await axios.get(`http://localhost:3001/${id}/getCurrentUser`);
+
+
+                setCurrentUser(response.data); // Update state with fetched user
+            } catch (error) {
+                console.error("Error getting user:", error);
+            }
+        };
+        getCurrentUser()
     }, []);
     useEffect(() => {
         socket.current = io('ws://localhost:9000');
@@ -206,6 +221,29 @@ export default function Users() {
         })
         setTempAllUsers(filteredData)
     }
+
+    const filterYourLikes = (e) => {
+        e.preventDefault()
+        const likes = [...currentUser[0].likesByThisUser];
+
+
+        const newUsers = allUsers.filter((user) => {
+            return likes.includes(user._id);
+        })
+
+        setTempAllUsers(newUsers)
+    }
+    const filterYouAreLiked = (e) => {
+        e.preventDefault()
+        const likes = [...currentUser[0].liked];
+
+
+        const newUsers = allUsers.filter((user) => {
+            return likes.includes(user._id);
+        })
+
+        setTempAllUsers(newUsers)
+    }
     const resetUsers = (e) => {
         e.preventDefault()
         setTempAllUsers(allUsers)
@@ -225,6 +263,51 @@ export default function Users() {
             [name]: value
         }));
     };
+    function calculateAge(birthDateString) {
+        const today = new Date();
+        const birthDate = new Date(birthDateString);
+        let age = today.getFullYear() - birthDate.getFullYear();
+
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        return age;
+    }
+    const likeUser = async (user) => {
+        try {
+            // Send a POST request to your Node.js backend
+            const response = await axios.post(`http://localhost:3001/likeUser/${id}`, user);
+
+            if (response.data.mes == 'Liked Successfully') {
+                alert(response.data.mes)
+            } else {
+                // Handle unsuccessful login
+                alert(response.data.mes);
+            }
+        } catch (error) {
+            // Handle error (e.g., network issues)
+            console.log('An error occurred. Please try again.');
+        }
+    }
+    const checkLikeOnChatClick = (user) => {
+        const likedByThisUser = currentUser[0].likesByThisUser.includes(user._id)
+        const liked = currentUser[0].liked.includes(user._id)
+        console.log(likedByThisUser, liked);
+
+        if (likedByThisUser && liked) {
+            setUserForChat({
+                name: user.name,
+                image: user.image,
+                id: user._id,
+            });
+            setChat(true);
+        }
+        else {
+            alert('Liked must be from twice')
+        }
+    }
     return (
         <>
             <div className="users-container">
@@ -300,28 +383,34 @@ export default function Users() {
                         <div className="form-col">
                             <label>City</label>
                             <input type="text" name="city"
-                                        value={filterUser.city}
-                                        onChange={handleCityChange}
-                                    />
-                                    {citySuggestions.length > 0 && (
-                                        <ul className="suggestions-list">
-                                            {citySuggestions.map((city, index) => (
-                                                <li
-                                                    key={index}
-                                                    onClick={() => handleCitySuggestion(city)}
-                                                    className="suggestion-item"
-                                                >
-                                                    {city.name}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
+                                value={filterUser.city}
+                                onChange={handleCityChange}
+                            />
+                            {citySuggestions.length > 0 && (
+                                <ul className="suggestions-list">
+                                    {citySuggestions.map((city, index) => (
+                                        <li
+                                            key={index}
+                                            onClick={() => handleCitySuggestion(city)}
+                                            className="suggestion-item"
+                                        >
+                                            {city.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                     </div>
                     <div className="form-row">
 
                         <div className="form-button">
                             <button type="submit" onClick={filterUsers}>Find Your Partner</button>
+                        </div>
+                        <div className="form-button">
+                            <button type="submit" onClick={filterYourLikes}>Find Your likes</button>
+                        </div>
+                        <div className="form-button">
+                            <button type="submit" onClick={filterYouAreLiked}>Find You are liked</button>
                         </div>
                         <div className="form-button">
                             <button type="submit" onClick={resetUsers}>Reset</button>
@@ -345,17 +434,24 @@ export default function Users() {
                                         <div className='cardText'>
                                             <h2 className='cardName'>{user.name}</h2>
                                             <h2 className='cardName'></h2>
-                                            <h2 className='cardName'>{user.age}</h2>
+                                            <h2 className='cardName'>{calculateAge(user.dob)}</h2>
+                                            <span id='like' onClick={() => likeUser(user)}
+                                                style={{
+                                                    color: currentUser &&
+                                                        currentUser[0].likesByThisUser.includes(user._id) ? 'red' : 'white'
+                                                }}
+                                            ><AiOutlineLike /></span>
+                                            <span id='likedBy'
+                                                style={{
+                                                    color: currentUser &&
+                                                        currentUser[0].liked.includes(user._id) ? 'blue' : 'white'
+                                                }}
+                                            ><AiOutlineLike /></span>
                                         </div>
                                         <span
                                             style={{ cursor: "pointer", color: "white" }}
                                             onClick={() => {
-                                                setUserForChat({
-                                                    name: user.name,
-                                                    image: user.image,
-                                                    id: user._id,
-                                                });
-                                                setChat(true);
+                                                checkLikeOnChatClick(user)
                                             }}>
                                             <IoMdChatboxes />
                                         </span>

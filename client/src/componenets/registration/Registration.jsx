@@ -6,6 +6,18 @@ import axios from 'axios';
 import CreateContextApi from '../../ContextApi/CreateContextApi';
 
 export default function Registration() {
+    const relationPreferences = [
+        "Friendship",
+        "Networking",
+        "Casual Dating",
+        "Long-term Relationship",
+        "Marriage",
+        "Professional Collaboration",
+        "Mentorship",
+        "Travel Companionship",
+        "Study Partnership",
+        "Roommate Search"
+    ];
     const navigate = useNavigate();
     const [country, setCountry] = useState('');
     const [code, setCode] = useState('');
@@ -22,7 +34,7 @@ export default function Registration() {
     const [user, setUser] = useState({
         name: '',
         email: '',
-        age: '',
+        dob: '',
         gender: '',
         country: '',
         province: '',
@@ -46,9 +58,9 @@ export default function Registration() {
         numberOfChildren: '',
         annualIncome: '' // Assuming password is part of the form
     });
-    useEffect(() => {
-        country == '' && setSuggestions([])
-    }, [country])
+    // useEffect(() => {
+    //     country == '' && setSuggestions([])
+    // }, [country])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -184,7 +196,7 @@ export default function Registration() {
         setLoading(true)
         try {
             // Send a POST request to your Node.js backend
-            const response = await axios.post('https://shadi-backend.vercel.app/register', user);
+            const response = await axios.post('http://localhost:3001/register', user);
 
             if (response.data.mes == 'Registered Successfully') {
                 alert(response.data.mes)
@@ -202,6 +214,8 @@ export default function Registration() {
     }
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
+        console.log(file);
+
         if (!file) {
             alert("Please select a file first.");
             return;
@@ -212,7 +226,7 @@ export default function Registration() {
         console.log(formData);
 
         try {
-            const response = await axios.post("https://shadi-backend.vercel.app/upload", formData,
+            const response = await axios.post("http://localhost:3001/upload", formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -249,15 +263,8 @@ export default function Registration() {
                                         onChange={handleInputChange} />
                                 </div>
                                 <div class="form-col">
-                                    <label id="la">Age:</label>
-                                    <select id="age" name="age"
-                                        value={user.age}
-                                        onChange={handleInputChange}>
-                                        <option value="">Select Age</option>
-                                        {range.map(num => (
-                                            <option value={num}>{num}</option>
-                                        ))}
-                                    </select>
+                                    <label id="la">DOB:</label>
+                                    <input type="date" name="dob" id="" value={user.dob} onChange={handleInputChange} />
                                 </div>
                             </div>
                             <div class="form-row">
@@ -344,9 +351,13 @@ export default function Registration() {
                                 </div>
                                 <div class="form-col">
                                     <label id="la">Relationship Preferences:</label>
-                                    <input type="text" name="relationshipPreference"
-                                        value={user.relationshipPreference}
-                                        onChange={handleInputChange} />
+                                    <select name='relationshipPreference' id=""
+                                        value={user.relationshipPreference} onChange={handleInputChange}>
+                                        <option value="">Select Preference</option>
+                                        {relationPreferences.map(option => (
+                                            <option value={option}>{option}</option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-row">

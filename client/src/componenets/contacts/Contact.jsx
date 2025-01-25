@@ -23,14 +23,14 @@ export default function Contact({ userForChat, newChatClick }) {
     }, [allMessages])
     const newNotification = async () => {
         try {
-            await axios.post(`https://shadi-backend.vercel.app/newNotification/${id}/${temprecieverId} `);
+            await axios.post(`http://localhost:3001/newNotification/${id}/${temprecieverId} `);
         } catch (error) {
 
         }
     }
     const changeNotification = async (reciever) => {
         try {
-            await axios.post(`https://shadi-backend.vercel.app/changeNotification/${id}/${reciever} `);
+            await axios.post(`http://localhost:3001/changeNotification/${id}/${reciever} `);
         } catch (error) {
 
         }
@@ -39,7 +39,7 @@ export default function Contact({ userForChat, newChatClick }) {
 
 
     const getContacts = async () => {
-        let data = await fetch(`https://shadi-backend.vercel.app/fetchContacts/${id}`);
+        let data = await fetch(`http://localhost:3001/fetchContacts/${id}`);
         let res = await data.json();
         setContacts(res);
         settempContacts(res);

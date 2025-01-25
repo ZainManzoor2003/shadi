@@ -36,7 +36,7 @@
     font-family: 'Poppins';
 }
 
-.modal-content input[type='text'] {
+.modal-content input[type='text'], .modal-content input[type='date']{
     width: 90%;
     border: none;
     /* margin-top: 5px; */

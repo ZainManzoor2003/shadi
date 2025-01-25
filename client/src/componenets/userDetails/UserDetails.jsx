@@ -10,7 +10,7 @@ export default function UserDetails({ }) {
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                const response = await axios.get(`https://shadi-backend.vercel.app/${id}/fetchUserDetails`);
+                const response = await axios.get(`http://localhost:3001/${id}/fetchUserDetails`);
                 setUserDetails(response.data); // Update state with fetched users
             } catch (error) {
                 console.error("Error fetching user details:", error);
@@ -18,6 +18,18 @@ export default function UserDetails({ }) {
         }
         fetchUserDetails()
     }, [])
+    function calculateAge(birthDateString) {
+        const today = new Date();
+        const birthDate = new Date(birthDateString);
+        let age = today.getFullYear() - birthDate.getFullYear();
+      
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+      
+        return age;
+      }
     return (
         <>
              <div id="sectionerparent">
@@ -31,7 +43,7 @@ export default function UserDetails({ }) {
                     <div>
                         <div id="abc">
                             <h3>{userDetails.name}</h3>
-                            <p>Age:{userDetails.age}</p>
+                            <p>Age:{calculateAge(userDetails.dob)}</p>
                             <p>{userDetails.city}, {userDetails.province}, {userDetails.country}</p>
                         </div>
 

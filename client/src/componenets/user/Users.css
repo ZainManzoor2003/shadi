@@ -312,3 +312,13 @@ p {
   font-family: var(--font);
   font-size: 5rem;
 }
+
+#like{
+  font-size: 20px;
+  /* color: white; */
+}
+#likedBy{
+  font-size: 20px;
+  color: white;
+  transform: rotateY(180deg);
+}

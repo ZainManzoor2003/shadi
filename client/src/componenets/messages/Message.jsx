@@ -27,7 +27,7 @@ export default function Message({ changeChat, userForChat, status, allChatClick,
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                const response = await axios.get(`https://shadi-backend.vercel.app/fetchMessages`);
+                const response = await axios.get(`http://localhost:3001/fetchMessages`);
                 setAllMessages(response.data);
             } catch (error) {
                 console.error("Error fetching messages:", error);
@@ -69,7 +69,7 @@ export default function Message({ changeChat, userForChat, status, allChatClick,
             setAllMessages([...allMessages, messageObj])
             socket.current.emit('sendMessage', messageObj);
             setMessage({ message: '', type: 'text' });
-            await axios.post(`https://shadi-backend.vercel.app/sendMessage`, messageObj)
+            await axios.post(`http://localhost:3001/sendMessage`, messageObj)
                 .then((res) => {
                     if (res.data.mes === 'Success') {
                     }

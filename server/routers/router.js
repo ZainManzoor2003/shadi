@@ -19,6 +19,8 @@ router.get('/', connection.connection)
 
 router.get('/:id/fetchUsers', connection.getAllUsers)
 
+router.get('/:id/getCurrentUser', connection.getCurrentUser)
+
 
 router.get('/:id/fetchUserDetails', connection.getUserDetails)
 
@@ -34,6 +36,8 @@ router.post('/login', connection.login)
 router.post('/register', connection.register)
 
 router.post('/sendMessage', connection.sendMessage)
+
+router.post('/likeUser/:id', connection.likeUser)
 
 router.post('/newNotification/:id/:tempRecieverId', connection.newNotification)
 

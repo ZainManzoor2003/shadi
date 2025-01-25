@@ -1,6 +1,7 @@
 const UserSchema = require('../models/userSchema')
 const MessageSchema = require('../models/messageSchema')
 const ContactSchema = require('../models/contactSchema')
+const LikeSchema = require('../models/likeSchema')
 const jwt = require('jsonwebtoken');
 
 const connection = (req, res) => {
@@ -78,6 +79,19 @@ const getAllUsers = async (req, res) => {
         const users = await UserSchema.find({ _id: { $ne: req.params.id } });
         if (users) {
             res.send(users)
+        }
+        else {
+            res.send({ mes: 'No User Found' });
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+const getCurrentUser = async (req, res) => {
+    try {
+        const user = await UserSchema.find({ _id: req.params.id });
+        if (user) {
+            res.send(user)
         }
         else {
             res.send({ mes: 'No User Found' });
@@ -180,9 +194,29 @@ const changeNotification = async (req, res) => {
     }
 }
 
+const likeUser = async (req, res) => {
+    try {
+        const user1 = await UserSchema.findOne({ _id: req.params.id })
+
+        if (user1.likesByThisUser.includes(req.body._id)) {
+            return res.send({ mes: 'User already liked' });
+        }
+        else {
+            user1.likesByThisUser.push(req.body._id)
+            await user1.save()
+            const user2 = await UserSchema.findOne({ _id: req.body._id })
+            user2.liked.push(req.params.id)
+            await user2.save()
+            res.send({ mes: 'Liked Successfully' })
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 
 
 module.exports = {
     connection, isLoggedIn, login, register, getAllUsers,
-    getUserDetails, getMessages, sendMessage, getContacts, newNotification, changeNotification
+    getUserDetails, getMessages, sendMessage, getContacts, newNotification, changeNotification, likeUser, getCurrentUser
 }
