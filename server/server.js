@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const connection = require('./db')
 
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://shadi-frontend.vercel.app'], // Replace with your allowed origin
+  origin: ['http://localhost:5173', 'https://shadi-frontend.vercel.app', 'http://localhost:80'], // Replace with your allowed origin
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedhallowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true // Allowed methods

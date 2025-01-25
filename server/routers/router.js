@@ -6,7 +6,14 @@ const crypto = require('crypto')
 const fs = require('fs');
 const { put } = require('@vercel/blob')
 const multer = require('multer')
+const AWS = require('aws-sdk');
 
+
+const s3 = new AWS.S3({
+    accessKeyId: 'AKIA3ISBVURJV7SPHHDH',
+    secretAccessKey: 'RVbgWWUx3u/c1lmgyD7JQJvjOtxBQno+E7mrfn2z',
+    region: 'us-east-1' // Replace with your region
+  });
 
 const upload = multer({
     storage: multer.memoryStorage(), // Store the file in memory as a buffer
@@ -43,29 +50,47 @@ router.post('/newNotification/:id/:tempRecieverId', connection.newNotification)
 
 router.post('/changeNotification/:id/:reciever', connection.changeNotification)
 
-router.post('/upload', upload.single('file'), async (req, res) => {
-    try {
-        // Check if the file exists
-        if (!req.file) {
-            return res.status(400).json({ error: "No file uploaded." });
-        }
+// router.post('/upload', upload.single('file'), async (req, res) => {
+//     try {
+//         // Check if the file exists
+//         if (!req.file) {
+//             return res.status(400).json({ error: "No file uploaded." });
+//         }
 
-        // Get file details from Multer
-        const { buffer, originalname } = req.file;
-
-
-        // Upload file to Vercel Blob
-        const { url } = await put(originalname, buffer, { access: "public" });
+//         // Get file details from Multer
+//         const { buffer, originalname } = req.file;
 
 
-        // Return the uploaded file's public URL
-        res.status(200).json({ url });
-    } catch (error) {
-        console.error("Upload error:", error);
-        res.status(500).json({ error: "Failed to upload the file." });
-    }
-});
+//         // Upload file to Vercel Blob
+//         const { url } = await put(originalname, buffer, { access: "public" });
 
+
+//         // Return the uploaded file's public URL
+//         res.status(200).json({ url });
+//     } catch (error) {
+//         console.error("Upload error:", error);
+//         res.status(500).json({ error: "Failed to upload the file." });
+//     }
+// });
+
+router.post('/upload',upload.single('file'),  (req, res) => {
+    const params = {
+      Bucket: 'shadibucket',
+      Key: `${Date.now()}-${req.file.originalname}`,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+    //   ACL: 'public-read',
+    };
+  
+    s3.upload(params, (err, data) => {
+      if (err) {
+        console.log(err.message);
+        
+        return res.status(500).send(err);
+      }
+      res.status(200).send({ url: data.Location });
+    });
+  });
 
 
 
