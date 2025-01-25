@@ -42,15 +42,15 @@ export default function Users() {
     useEffect(() => {
         setTempAllUsers(allUsers)
     }, [allUsers])
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3001/${id}/fetchUsers`);
+            setAllUsers(response.data); // Update state with fetched users
+        } catch (error) {
+            console.error("Error fetching users:", error);
+        }
+    };
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await axios.get(`http://localhost:3001/${id}/fetchUsers`);
-                setAllUsers(response.data); // Update state with fetched users
-            } catch (error) {
-                console.error("Error fetching users:", error);
-            }
-        };
         allUsers.length === 0 && fetchUsers();
     }, []);
     useEffect(() => {
@@ -281,7 +281,8 @@ export default function Users() {
             const response = await axios.post(`http://localhost:3001/likeUser/${id}`, user);
 
             if (response.data.mes == 'Liked Successfully') {
-                alert(response.data.mes)
+                alert(response.data.mes);
+                fetchUsers()
             } else {
                 // Handle unsuccessful login
                 alert(response.data.mes);
