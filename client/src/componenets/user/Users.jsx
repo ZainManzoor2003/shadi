@@ -45,7 +45,8 @@ export default function Users() {
     const fetchUsers = async () => {
         try {
             const response = await axios.get(`http://localhost:3001/${id}/fetchUsers`);
-            setAllUsers(response.data); // Update state with fetched users
+            setAllUsers(response.data);
+            setTempAllUsers(response.data) // Update state with fetched users
         } catch (error) {
             console.error("Error fetching users:", error);
         }
@@ -53,17 +54,17 @@ export default function Users() {
     useEffect(() => {
         allUsers.length === 0 && fetchUsers();
     }, []);
+    const getCurrentUser = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3001/${id}/getCurrentUser`);
+
+
+            setCurrentUser(response.data); // Update state with fetched user
+        } catch (error) {
+            console.error("Error getting user:", error);
+        }
+    };
     useEffect(() => {
-        const getCurrentUser = async () => {
-            try {
-                const response = await axios.get(`http://localhost:3001/${id}/getCurrentUser`);
-
-
-                setCurrentUser(response.data); // Update state with fetched user
-            } catch (error) {
-                console.error("Error getting user:", error);
-            }
-        };
         getCurrentUser()
     }, []);
     useEffect(() => {
@@ -282,7 +283,6 @@ export default function Users() {
 
             if (response.data.mes == 'Liked Successfully') {
                 alert(response.data.mes);
-                fetchUsers()
             } else {
                 // Handle unsuccessful login
                 alert(response.data.mes);
@@ -291,6 +291,8 @@ export default function Users() {
             // Handle error (e.g., network issues)
             console.log('An error occurred. Please try again.');
         }
+        fetchUsers();
+        getCurrentUser()
     }
     const checkLikeOnChatClick = (user) => {
         const likedByThisUser = currentUser[0].likesByThisUser.includes(user._id)
