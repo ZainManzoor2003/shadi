@@ -436,15 +436,15 @@ export default function Users() {
                                             <h2 className='cardName'></h2>
                                             <h2 className='cardName'>{calculateAge(user.dob)}</h2>
                                             <span id='like' onClick={() => likeUser(user)}
-                                                style={{
-                                                    color: currentUser &&
+                                                 style={{
+                                                    color:
                                                         currentUser[0].likesByThisUser.includes(user._id) ? 'red' : 'white'
                                                 }}
                                             ><AiOutlineLike /></span>
                                             <span id='likedBy'
                                                 style={{
-                                                    color: currentUser &&
-                                                        currentUser[0].liked.includes(user._id) ? 'blue' : 'white'
+                                                    color:
+                                                    currentUser[0].liked.includes(user._id) ? 'blue' : 'white'
                                                 }}
                                             ><AiOutlineLike /></span>
                                         </div>
