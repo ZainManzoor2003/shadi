@@ -24,7 +24,7 @@ export default function Users() {
         countries, setCountries, cities, setCities, provinces, setProvinces,
     } = useContext(CreateContextApi);
     const [tempAllUsers, setTempAllUsers] = useState(allUsers)
-    const [currentUser, setCurrentUser] = useState({});
+    const [currentUser, setCurrentUser] = useState([]);
 
     const [userForChat, setUserForChat] = useState({ image: '', name: '', id: '' })
     const [country, setCountry] = useState('');
@@ -435,18 +435,22 @@ export default function Users() {
                                             <h2 className='cardName'>{user.name}</h2>
                                             <h2 className='cardName'></h2>
                                             <h2 className='cardName'>{calculateAge(user.dob)}</h2>
-                                            <span id='like' onClick={() => likeUser(user)}
-                                                 style={{
-                                                    color:
-                                                        currentUser[0].likesByThisUser.includes(user._id) ? 'red' : 'white'
-                                                }}
-                                            ><AiOutlineLike /></span>
-                                            <span id='likedBy'
-                                                style={{
-                                                    color:
-                                                    currentUser[0].liked.includes(user._id) ? 'blue' : 'white'
-                                                }}
-                                            ><AiOutlineLike /></span>
+                                            {currentUser[0] &&
+                                                <>
+                                                    <span id='like' onClick={() => likeUser(user)}
+                                                        style={{
+                                                            color:
+                                                                currentUser[0].likesByThisUser.includes(user._id) ? 'red' : 'white'
+                                                        }}
+                                                    ><AiOutlineLike /></span>
+                                                    <span id='likedBy'
+                                                        style={{
+                                                            color:
+                                                                currentUser[0].liked.includes(user._id) ? 'blue' : 'white'
+                                                        }}
+                                                    ><AiOutlineLike /></span>
+                                                </>
+                                            }
                                         </div>
                                         <span
                                             style={{ cursor: "pointer", color: "white" }}
