@@ -9,6 +9,7 @@ import axios from 'axios';
 import { IoMdChatboxes } from "react-icons/io";
 import Contact from '../contacts/Contact';
 import { AiOutlineLike } from "react-icons/ai";
+import { FaHeart } from "react-icons/fa6";
 
 export default function Users() {
     const navigate = useNavigate();
@@ -204,24 +205,39 @@ export default function Users() {
     };
 
     const filterUsers = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         const filteredData = allUsers.filter((user) => {
+            // Calculate the user's age using the calculateAge function
+            const userAge = calculateAge(user.dob);
+
             const isLookingForMatch =
                 filterUser.lookingFor === '' || user.gender === filterUser.lookingFor;
+
             const isAgeMatch =
-                (filterUser.startAge === '' || user.age >= parseInt(filterUser.startAge)) &&
-                (filterUser.endAge === '' || user.age <= parseInt(filterUser.endAge));
+                (filterUser.startAge === '' || userAge >= parseInt(filterUser.startAge)) &&
+                (filterUser.endAge === '' || userAge <= parseInt(filterUser.endAge));
+
             const isCountryMatch =
                 filterUser.country === '' || user.country.toLowerCase() === filterUser.country.toLowerCase();
+
             const isProvinceMatch =
-                filterUser.province === '' || user.province.toLowerCase() === filterUser.province.toLowerCase();
+                filterUser.province === '' ||
+                provinceSuggestions.some((province) =>
+                    province.toLowerCase() === user.province.toLowerCase()
+                );
+
             const isCityMatch =
-                filterUser.city === '' || user.city.toLowerCase() === filterUser.city.toLowerCase();
+                filterUser.city === '' ||
+                citySuggestions.some((city) =>
+                    city.toLowerCase() === user.city.toLowerCase()
+                );
 
             return isLookingForMatch && isAgeMatch && isCountryMatch && isProvinceMatch && isCityMatch;
-        })
-        setTempAllUsers(filteredData)
-    }
+        });
+        setTempAllUsers(filteredData);
+    };
+
+
 
     const filterYourLikes = (e) => {
         e.preventDefault()
@@ -326,7 +342,14 @@ export default function Users() {
                         <div className="form-col">
 
                             <label>Looking For</label>
-                            <input type="text" name='lookingFor' value={filterUser.lookingFor} onChange={handleInputChange} />
+                            <select id="gender" name="lookingFor"
+                                value={filterUser.lookingFor}
+                                onChange={handleInputChange}>
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
                         <div className="form-col">
                             <label>Age</label>
@@ -445,13 +468,13 @@ export default function Users() {
                                                             color:
                                                                 currentUser[0].likesByThisUser.includes(user._id) ? 'red' : 'white'
                                                         }}
-                                                    ><AiOutlineLike /></span>
+                                                    ><FaHeart /></span>
                                                     <span id='likedBy'
                                                         style={{
                                                             color:
                                                                 currentUser[0].liked.includes(user._id) ? 'blue' : 'white'
                                                         }}
-                                                    ><AiOutlineLike /></span>
+                                                    ><FaHeart /></span>
                                                 </>
                                             }
                                         </div>
