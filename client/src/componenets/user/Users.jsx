@@ -10,6 +10,7 @@ import { IoMdChatboxes } from "react-icons/io";
 import Contact from '../contacts/Contact';
 import { AiOutlineLike } from "react-icons/ai";
 import { FaHeart } from "react-icons/fa6";
+import { IoIosStar } from "react-icons/io";
 
 export default function Users() {
     const navigate = useNavigate();
@@ -261,6 +262,17 @@ export default function Users() {
 
         setTempAllUsers(newUsers)
     }
+    const filterYourFavourites = (e) => {
+        e.preventDefault()
+        const likes = [...currentUser[0].favourites];
+
+
+        const newUsers = allUsers.filter((user) => {
+            return likes.includes(user._id);
+        })
+
+        setTempAllUsers(newUsers)
+    }
     const resetUsers = (e) => {
         e.preventDefault()
         setTempAllUsers(allUsers)
@@ -298,6 +310,24 @@ export default function Users() {
             const response = await axios.post(`http://localhost:3001/likeUser/${id}`, user);
 
             if (response.data.mes == 'Liked Successfully') {
+                alert(response.data.mes);
+            } else {
+                // Handle unsuccessful login
+                alert(response.data.mes);
+            }
+        } catch (error) {
+            // Handle error (e.g., network issues)
+            console.log('An error occurred. Please try again.');
+        }
+        fetchUsers();
+        getCurrentUser()
+    }
+    const favouriteUser = async (user) => {
+        try {
+            // Send a POST request to your Node.js backend
+            const response = await axios.post(`http://localhost:3001/favouriteUser/${id}`, user);
+
+            if (response.data.mes == 'Favourite Successfully') {
                 alert(response.data.mes);
             } else {
                 // Handle unsuccessful login
@@ -439,6 +469,9 @@ export default function Users() {
                             <button type="submit" onClick={filterYouAreLiked}>Find You are liked</button>
                         </div>
                         <div className="form-button">
+                            <button type="submit" onClick={filterYourFavourites}>Find Your favourites</button>
+                        </div>
+                        <div className="form-button">
                             <button type="submit" onClick={resetUsers}>Reset</button>
                         </div>
                     </div>
@@ -469,12 +502,12 @@ export default function Users() {
                                                                 currentUser[0].likesByThisUser.includes(user._id) ? 'red' : 'white'
                                                         }}
                                                     ><FaHeart /></span>
-                                                    <span id='likedBy'
+                                                    <span id='likedBy' onClick={() => favouriteUser(user)}
                                                         style={{
                                                             color:
-                                                                currentUser[0].liked.includes(user._id) ? 'blue' : 'white'
+                                                                currentUser[0].favourites.includes(user._id) ? 'yellow' : 'white'
                                                         }}
-                                                    ><FaHeart /></span>
+                                                    ><IoIosStar /></span>
                                                 </>
                                             }
                                         </div>

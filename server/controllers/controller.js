@@ -1,7 +1,6 @@
 const UserSchema = require('../models/userSchema')
 const MessageSchema = require('../models/messageSchema')
 const ContactSchema = require('../models/contactSchema')
-const LikeSchema = require('../models/likeSchema')
 const jwt = require('jsonwebtoken');
 
 const connection = (req, res) => {
@@ -213,10 +212,27 @@ const likeUser = async (req, res) => {
         console.log(err);
     }
 }
+const favouriteUser = async (req, res) => {
+    try {
+        const user = await UserSchema.findOne({ _id: req.params.id })
+
+        if (user.favourites.includes(req.body._id)) {
+            return res.send({ mes: 'User already favourite' });
+        }
+        else {
+            user.favourites.push(req.body._id)
+            await user.save()
+            res.send({ mes: 'Favourite Successfully' })
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 
 
 module.exports = {
     connection, isLoggedIn, login, register, getAllUsers,
-    getUserDetails, getMessages, sendMessage, getContacts, newNotification, changeNotification, likeUser, getCurrentUser
+    getUserDetails, getMessages, sendMessage, getContacts, newNotification, changeNotification, 
+    likeUser, getCurrentUser,favouriteUser
 }

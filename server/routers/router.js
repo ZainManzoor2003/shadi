@@ -46,6 +46,8 @@ router.post('/sendMessage', connection.sendMessage)
 
 router.post('/likeUser/:id', connection.likeUser)
 
+router.post('/favouriteUser/:id', connection.favouriteUser)
+
 router.post('/newNotification/:id/:tempRecieverId', connection.newNotification)
 
 router.post('/changeNotification/:id/:reciever', connection.changeNotification)

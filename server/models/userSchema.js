@@ -27,7 +27,8 @@ const userSchema = new mongoose.Schema({
     numberOfChildren: { type: String, default: '' },
     annualIncome: { type: String, default: '' },
     likesByThisUser: { type: [String], default: [] }, // Array of strings
-    liked: { type: [String], default: [] } // Array of strings
+    liked: { type: [String], default: [] }, // Array of strings
+    favourites: { type: [String], default: [] } // Array of strings
 });
 
 const User = mongoose.model('User', userSchema);
